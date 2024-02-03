@@ -1,7 +1,5 @@
 import Head from "next/head";
-import Link from "next/link";
-import { ChangeEvent } from "react";
-import { useState } from "react"; // Import useState hook
+import { ChangeEvent, useState } from "react"; // Import useState and ChangeEvent hooks
 import OpenAI from "openai";
 
 const openai = new OpenAI({ apiKey: process.env.NEXT_PUBLIC_OPENAI_KEY, dangerouslyAllowBrowser: true });
@@ -10,26 +8,34 @@ export default function Home() {
   const [url, setUrl] = useState("");
 
   const sendPrompt = async () => {
-   console.log(url)
+    console.log(url)
+    // Call the API route to take a screenshot and store it
+    const screenshotResponse = await fetch(`/api/screenshot_route?url=${(encodeURIComponent(url))}`);
+    if (!screenshotResponse.ok) {
+      console.error("Failed to take a screenshot");
+      return;
+    }
+    
+    // Assuming the API returns the path or URL of the saved screenshot
+    const screenshotData = await screenshotResponse.json();
+    const screenshotUrl = screenshotData.screenshotUrl; // Adjust according to the actual API response
 
-   const response = await openai.chat.completions.create({
-    model: "gpt-4-vision-preview",
-    messages: [
-      {
-        role: "user",
-        content: [
-          { type: "text", text: `Can you tell me what's going on in this image.` },
-          {
-            type: "image_url",
-            image_url: {
-              "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg",
+    const response = await openai.chat.completions.create({
+      model: "gpt-4-vision-preview",
+      messages: [
+        {
+          role: "user",
+          content: [
+            { type: "text", text: `Can you tell me what's going on in this image.` },
+            {
+              type: "image_url",
+              image_url: { "url": screenshotUrl }, // Use the screenshot URL from the API response
             },
-          },
-        ],
-      },
-    ],
-  });
-  console.log(response);
+          ],
+        },
+      ],
+    });
+    console.log(response);
   };
 
   const handleUrlChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -46,18 +52,15 @@ export default function Home() {
 
       <main className="flex min-h-screen flex-col items-center justify-center">
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-
-        <input
-          className="rounded-lg"
-          type="url"
-          placeholder="URL"
-          value={url}
-          onChange={handleUrlChange}
+          <input
+            className="rounded-lg"
+            type="url"
+            placeholder="URL"
+            value={url}
+            onChange={handleUrlChange}
           />
-
-
-        <button
-            onClick={() => sendPrompt()}
+          <button
+            onClick={sendPrompt}
             className="cursor-pointer font-medium text-blue-600 hover:underline"
           >
             View
