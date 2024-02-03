@@ -2,12 +2,34 @@ import Head from "next/head";
 import Link from "next/link";
 import { ChangeEvent } from "react";
 import { useState } from "react"; // Import useState hook
+import OpenAI from "openai";
+
+const openai = new OpenAI({ apiKey: process.env.OPENAI_KEY, dangerouslyAllowBrowser: true });
 
 export default function Home() {
   const [url, setUrl] = useState("");
 
   const sendPrompt = async () => {
-   console.log()
+   console.log(url)
+
+   const response = await openai.chat.completions.create({
+    model: "gpt-4-vision-preview",
+    messages: [
+      {
+        role: "user",
+        content: [
+          { type: "text", text: `Can you tell me what's going on in this image.` },
+          {
+            type: "image_url",
+            image_url: {
+              "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg",
+            },
+          },
+        ],
+      },
+    ],
+  });
+  console.log(response);
   };
 
   const handleUrlChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -27,8 +49,8 @@ export default function Home() {
 
         <input
           className="rounded-lg"
-          type="email"
-          placeholder="Email"
+          type="url"
+          placeholder="URL"
           value={url}
           onChange={handleUrlChange}
           />
