@@ -30,7 +30,7 @@ export default function Home() {
           type="email"
           placeholder="Email"
           value={url}
-        onChange={handleEmailChange}
+          onChange={handleUrlChange}
           />
 
 
