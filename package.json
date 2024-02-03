@@ -10,7 +10,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@t3-oss/env-nextjs": "^0.7.1",
+    "@t3-oss/env-nextjs": "^0.7.3",
     "dotenv": "^16.4.1",
     "next": "^14.0.4",
     "openai": "^4.26.0",
