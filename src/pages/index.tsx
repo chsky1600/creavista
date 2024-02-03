@@ -4,7 +4,7 @@ import { ChangeEvent } from "react";
 import { useState } from "react"; // Import useState hook
 import OpenAI from "openai";
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_KEY, dangerouslyAllowBrowser: true });
+const openai = new OpenAI({ apiKey: process.env.NEXT_PUBLIC_OPENAI_KEY, dangerouslyAllowBrowser: true });
 
 export default function Home() {
   const [url, setUrl] = useState("");
