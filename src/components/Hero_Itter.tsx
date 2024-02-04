@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
 export function Hero_Itter(props: React.ComponentPropsWithoutRef<"h1">) {
-  const synonyms = ['SUPERIOR', 'GREATER', 'IMPROVED', 'ADVANCED', 'ENHANCED'];
+  const synonyms = ['SUPERIOR', 'GREATER', 'IMPROVED', 'ADVANCED', 'ENHANCED', "THE ENVY OF ALL YOUR FRIENDS", "EPIC"];
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
       setCurrentWordIndex((currentWordIndex + 1) % synonyms.length);
-    }, 700); // Change every 2 seconds
+    }, 1000); // Change every 2 seconds
 
     // Clean up function
     return () => {

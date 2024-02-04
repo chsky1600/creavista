@@ -4,7 +4,10 @@ const server = z.object({
 
 HOST_NAME: z.string(),
 MOCK_OPENAI: z.string(),
-NEXT_PUBLIC_OPENAI_KEY: z.string()
+NEXT_PUBLIC_OPENAI_KEY: z.string(),
+AWS_ACCESS_KEY_ID: z.string(),
+AWS_SECRET_ACCESS_KEY: z.string(),
+
 
 });
 
@@ -23,7 +26,9 @@ const client = z.object({
 const processEnv = {
     HOST_NAME: process.env.HOST_NAME,
     MOCK_OPENAI: process.env.MOCK_OPENAI,
-    NEXT_PUBLIC_OPENAI_KEY: process.env.NEXT_PUBLIC_OPENAI_KEY
+    NEXT_PUBLIC_OPENAI_KEY: process.env.NEXT_PUBLIC_OPENAI_KEY,
+    AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
+    AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
 
 };
 

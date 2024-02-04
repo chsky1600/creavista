@@ -17,10 +17,10 @@ export function DynamicInput({ handleUrlChange, url, ...props }: DynamicInputPro
     ...props,
     value: inputValue,
     onChange: handleChange,
-    size: inputValue.length || 10,
+    size: inputValue.length || 20,
     className: "text-center font-mono bg-transparent hover:border hover:border-black p-3 mt-0.5 ",
     type: "url",
-    placeholder: "______________",
+    placeholder: "______________________",
   };
 
   return (

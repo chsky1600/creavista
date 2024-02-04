@@ -1,5 +1,4 @@
 // pages/api/screenshot.ts
-
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { takeScreenshot } from '../../scrape/gethomepage'; // Adjust the import path as needed
 
@@ -8,11 +7,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.log(url)
 
     if (typeof url === 'string') {
-        const savePath = '/tmp/screenshot.png'; // Adjust path as needed, considering server environment
+        const savePath = './src/pages/screenshot.png'; // Adjust path as needed, considering server environment
 
         try {
             await takeScreenshot(url, savePath);
-            console.log("Gotten this far!")
+            // console.log("saved!")
             // Respond with success, or consider sending the screenshot back in the response
             res.status(200).json({ success: true });
         } catch (error: unknown) {

@@ -3,9 +3,8 @@ import * as chrome from 'selenium-webdriver/chrome';
 import fs from 'fs';
 
 export async function takeScreenshot(url: string, savePath: string) {
-    const options = new chrome.Options();
-    const driver = await new Builder().setChromeOptions(options).forBrowser('chrome').build();
-
+    const options = new chrome.Options().addArguments('--headless');
+    let driver = await new Builder().setChromeOptions(options).forBrowser('chrome').build();
     try {
         // Navigate to the page
         await driver.navigate().to(url);
