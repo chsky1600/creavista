@@ -1,11 +1,29 @@
 import Head from "next/head";
-import { ChangeEvent, useState } from "react"; // Import useState and ChangeEvent hooks
-import OpenAI from "openai";
+import  AWS  from 'aws-sdk';
+import { ChangeEvent, useState, FormEvent } from "react"; 
 import { Hero_Itter} from "~/components/Hero_Itter";
 import { DynamicInput } from '~/components/DynamicInput'; // Make sure the path is correct
 
 
+const BUCKET_NAME = "cover-gen";
+
+// wow, this was great
+const accessKeyId = process.env.ACCESS_KEY_ID!;
+const secretAccessKey = process.env.SECRET_ACCESS!;
+
+const s3 = new AWS.S3({ 
+    credentials:{ 
+        accessKeyId,
+        secretAccessKey,
+    },
+    region: "us-east-1"
+});
+
+
+import OpenAI from "openai";
 const openai = new OpenAI({ apiKey: process.env.NEXT_PUBLIC_OPENAI_KEY, dangerouslyAllowBrowser: true });
+
+
 
 export default function Home() {
   const [url, setUrl] = useState("");
@@ -21,9 +39,13 @@ export default function Home() {
       return;
     }
     
-    // Assuming the API returns the path or URL of the saved screenshot
-    const screenshotData = await screenshotResponse.json();
-    const screenshotUrl = screenshotData.screenshotUrl; // Adjust according to the actual API response
+    console.log(screenshotResponse)
+
+    const res = await fetch(`/api/convertToBase64?imagePath=${encodeURIComponent("./screenshot.png")}`);
+    const data = await res.json();
+    const encodedImage = data.encodedImage;
+
+    // console.log(encodedImage);
 
    const response = await openai.chat.completions.create({
     model: "gpt-4-vision-preview",
@@ -39,7 +61,7 @@ export default function Home() {
             type: "image_url",
             image_url: {
               //"url": 'path/to/screenshot'
-              "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg",
+              url: `data:image/jpeg;base64,${encodedImage}`
             },
           },
         ],
@@ -58,6 +80,11 @@ export default function Home() {
   const handleUrlChange = (e: ChangeEvent<HTMLInputElement>) => {
     setUrl(e.target.value);
   };
+
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+    sendPrompt();
+  };
   return (
     <>
       <Head>
@@ -66,16 +93,18 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#feffc8] to-[#f5ffab]">
         <div className="flex flex-col items-center justify-center gap-20">
           <h1 className="font-bold text-5xl font-mono">CREAVISTA</h1>
 
-          <div className="flex justify-center items-center space-x-7">
-            <h1 className="text-center font-mono bg-transparent p-1 font-bold">LET'S MAKE</h1>
-            <DynamicInput
+          
+          <div className="flex justify-center items-center space-x-3">
+            <h1 className="text-center font-mono bg-transparent p-1 font-bold ">LET'S MAKE</h1>
+            <form onSubmit={handleSubmit}><DynamicInput
         url={url}
         handleUrlChange={handleUrlChange}
-      /> <Hero_Itter/>
+      /></form> <Hero_Itter/>
            
           </div>
 
@@ -87,6 +116,7 @@ export default function Home() {
           </button>
 
           {showImage && <img src={imageSrc} alt="Your Image" />}
+          
         </div>
       </main>
     </>

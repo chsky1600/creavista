@@ -11,13 +11,16 @@
   },
   "dependencies": {
     "@t3-oss/env-nextjs": "^0.7.3",
+    "aws-sdk": "^2.1550.0",
     "dotenv": "^16.4.1",
     "fs": "^0.0.1-security",
     "next": "^14.0.4",
     "openai": "^4.26.0",
+    "python3": "^0.0.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "selenium-webdriver": "^4.17.0",
+    "sharp": "^0.33.2",
     "zod": "^3.22.4"
   },
   "devDependencies": {
