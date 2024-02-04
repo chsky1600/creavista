@@ -4,7 +4,7 @@ const server = z.object({
 
 HOST_NAME: z.string(),
 MOCK_OPENAI: z.string(),
-OPENAI_API_KEY: z.string()
+NEXT_PUBLIC_OPENAI_KEY: z.string()
 
 });
 
@@ -23,7 +23,7 @@ const client = z.object({
 const processEnv = {
     HOST_NAME: process.env.HOST_NAME,
     MOCK_OPENAI: process.env.MOCK_OPENAI,
-    OPENAI_API_KEY: process.env.OPENAI_API_KEY
+    NEXT_PUBLIC_OPENAI_KEY: process.env.NEXT_PUBLIC_OPENAI_KEY
 
 };
 
