@@ -1,6 +1,9 @@
 import Head from "next/head";
 import { ChangeEvent, useState } from "react"; // Import useState and ChangeEvent hooks
 import OpenAI from "openai";
+import { Hero_Itter} from "~/components/Hero_Itter";
+import { DynamicInput } from '~/components/DynamicInput'; // Make sure the path is correct
+
 
 const openai = new OpenAI({ apiKey: process.env.NEXT_PUBLIC_OPENAI_KEY, dangerouslyAllowBrowser: true });
 
@@ -55,7 +58,6 @@ export default function Home() {
   const handleUrlChange = (e: ChangeEvent<HTMLInputElement>) => {
     setUrl(e.target.value);
   };
-
   return (
     <>
       <Head>
@@ -65,19 +67,19 @@ export default function Home() {
       </Head>
 
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#feffc8] to-[#f5ffab]">
-        <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
+        <div className="flex flex-col items-center justify-center gap-20">
+          <h1 className="font-bold text-5xl font-mono">CREAVISTA</h1>
 
-        <h1 className="font-bold text-5xl font-mono">CREAVISTA</h1>
-        <input
-          className="text-center font-mono bg-transparent hover:border hover:border-black p-4"
-          type="url"
-          placeholder="URL"
-          value={url}
-          onChange={handleUrlChange}
-          />
+          <div className="flex justify-center items-center space-x-7">
+            <h1 className="text-center font-mono bg-transparent p-1 font-bold">LET'S MAKE</h1>
+            <DynamicInput
+        url={url}
+        handleUrlChange={handleUrlChange}
+      /> <Hero_Itter/>
+           
+          </div>
 
-
-        <button
+          <button
             onClick={() => sendPrompt()}
             className="cursor-pointer font-bold text-2xl font-mono hover:border hover:border-black p-4"
           >
@@ -85,11 +87,9 @@ export default function Home() {
           </button>
 
           {showImage && <img src={imageSrc} alt="Your Image" />}
-
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-          </div>
         </div>
       </main>
     </>
   );
-}
+  }
+
