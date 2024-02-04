@@ -6,6 +6,8 @@ const openai = new OpenAI({ apiKey: process.env.NEXT_PUBLIC_OPENAI_KEY, dangerou
 
 export default function Home() {
   const [url, setUrl] = useState("");
+  const [showImage, setShowImage] = useState(false);
+  const [imageSrc, setImageSrc] = useState('');
 
   const sendPrompt = async () => {
     console.log(url)
@@ -43,10 +45,10 @@ export default function Home() {
   });
 
   console.log(response.choices[0]);
-  // contains website design language and themes
 
-  // send newPrompt to another api call that is text to image
-  // display the response for this on the screen.
+  // IMAGE URL VARIABLE HOLDS THE LINK TO THE IMAGE
+ // setImageSrc(imageUrl);
+ // setShowImage(true);
 
   };
 
@@ -81,6 +83,9 @@ export default function Home() {
           >
             GENERATE DESIGN
           </button>
+
+          {showImage && <img src={imageSrc} alt="Your Image" />}
+
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
           </div>
         </div>
